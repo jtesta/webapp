@@ -31,7 +31,7 @@ This application is intentionally vulnerable to SQL injection.  The `/page1` URI
 
 By default (with a very limited set of exceptions), Flask applications are immune to XSS, [as per the documentation](https://flask.palletsprojects.com/en/stable/web-security/#cross-site-scripting-xss).
 
-The service returns several security HTTP headers (see X).
+The service returns several security HTTP headers (see [nginx-site.conf](https://github.com/jtesta/webapp/blob/master/nginx-site.conf)).
 
 The application does not use TLS by default, as hostname configuration and TLS certificate registration are rather complex.  This must be done manually.
 
