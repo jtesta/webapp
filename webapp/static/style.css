@@ -1,0 +1,46 @@
+html {
+  font-family: sans-serif;
+  background: #eee;
+  padding: 1rem;
+}
+
+body {
+  max-width: 960px;
+  margin: 0 auto;
+  background: white;
+}
+
+h1 {
+  font-family: serif;
+  color: black;
+}
+
+a {
+  color: #377ba8;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid black;
+}
+
+input[type=submit] {
+  align-self: start;
+  min-width: 10em;
+}
+
+div.normal {}
+
+div.valid_jwt {
+  background-color: red;
+  color: black;
+  overflow-wrap: break-word;
+}
+
+#user_info {
+  display: none;
+}
+
+#logged_in_user {
+  margin-right: 10px;
+}

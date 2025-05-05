@@ -1,0 +1,13 @@
+[Unit]
+Description=Flask Web Application
+After=network.target
+
+[Service]
+User=nobody
+WorkingDirectory=/opt/webapp
+Environment=FLASK_CONFIG_FILE=/opt/webapp/webapp.cfg
+ExecStart=/usr/bin/gunicorn -b localhost:8080 -w 4 'webapp:create_app()'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

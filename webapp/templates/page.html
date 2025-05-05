@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Page {{ page_number }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+    {% if page_number == "2" %}
+    <script>
+      function body_onload() {
+
+        // Add a click listener to the logout link.
+        logout_link = document.getElementById("a_logout");
+        logout_link.addEventListener("click", function () {
+
+          // Show the Google sign-in link again.
+          document.getElementsByClassName("g_id_signin")[0].style.display = "block";
+
+          // Hide our user info.
+          document.getElementById("user_info").style.display = "none";
+        });
+      }
+
+      // Google's OIDC callback function.
+      function handleCredentialResponse(response) {
+        console.log(response);
+
+        // Parse the JWT that Google returns.
+        const responsePayload = decodeJwtResponse(response.credential);
+
+        console.log("ID: " + responsePayload.sub);
+        console.log('Full Name: ' + responsePayload.name);
+        console.log('Given Name: ' + responsePayload.given_name);
+        console.log('Family Name: ' + responsePayload.family_name);
+        console.log("Image URL: " + responsePayload.picture);
+        console.log("Email: " + responsePayload.email);
+
+        // Update the logged in user field, and unhide it.
+        document.getElementById("logged_in_user").innerHTML = "User: " + responsePayload.name + " (" + responsePayload.email + ")";
+        document.getElementById("user_info").style.display = "block";
+
+        // Hide the Google sign-in link.
+        document.getElementsByClassName("g_id_signin")[0].style.display = "none";
+      }
+
+      function decodeJwtResponse(token) {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+      }
+    </script>
+    {% endif %}
+  </head>
+  {% if page_number == "2" %}
+  <body onload="body_onload()">
+  {% else %}
+  <body>
+  {% endif %}
+    <h1>Page {{ page_number }}</h1>
+    <br>
+
+    {% if page_number == "2" %}
+    <div id="user_info"><span id="logged_in_user"></span><a id="a_logout" href="#">Log out</a></div>
+    <br>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="g_id_onload"
+         data-client_id="{{ google_signin_client_id }}"
+         data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+    <br><br>
+    {% endif %}
+
+    <form action="/page{{ page_number }}" method="POST">
+      <input type="text" id="user_input" name="user_input">
+      {# <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> #}
+      <input type="submit" value="Submit">
+    </form>
+
+    {% if user_input|length > 0 %}
+    <br>
+    <hr>
+    <br>
+    <div class="{{ output_class }}">{{ user_input }} - {{ timestamp }}</div>
+    <br>
+    <hr>
+    {% endif %}
+    <br>
+    <br>
+    <a href="/">Back</a>
+  </body>
+</html>

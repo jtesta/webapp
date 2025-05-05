@@ -1,0 +1,9 @@
+# Generate a JWT ES256 public key with the openssl command-line tool:
+#   $ openssl ecparam -name prime256v1 -genkey -noout -out /tmp/es256.key
+#   $ openssl ec -in /tmp/es256.key -pubout -out /tmp/es256.pem
+#
+# Then put the output of /tmp/es256.pem here, substituting newlines with "\n":
+JWT_ES256_PUBLIC_KEY = ""
+
+# Follow the instructions for creating an OIDC client ID here: <https://developers.google.com/identity/sign-in/web/sign-in>.  Then place the resulting client ID here:
+GOOGLE_SIGNIN_CLIENT_ID = ""
